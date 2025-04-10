@@ -1,11 +1,11 @@
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
 
-dotenv.config(); // <-- This is enough if .env is in backend/
+dotenv.config({ path: "config.env" }); // ✅ This is okay at the top
 
-console.log("Stripe Secret Key:", process.env.STRIPE_SECRET_KEY);
+// ✅ These must be in the top-level, not inside any object
 
-console.log("🔍 All ENV Vars:", process.env);
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 export default stripe;

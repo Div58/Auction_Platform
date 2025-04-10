@@ -96,10 +96,7 @@ export const register = async (req, res, next) => {
           customerId: stripeCustomer.id,
           cardLast4: "", // Will be stored after first transaction
         },
-        razorpay: {
-          customerId: razorpayCustomer.id,
-          paymentId: "", // Will be stored after first transaction
-        },
+        
       },
     });
 
