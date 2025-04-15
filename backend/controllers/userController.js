@@ -1,12 +1,14 @@
+import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
 import User from "../models/userSchema.js";
 import { v2 as cloudinary } from "cloudinary";
+import { generateToken } from "../utils/jwtToken.js";
 // import  stripe  from "../utils/stripe.js";
 
 //import { razorpay } from "../utils/razorpay.js";
 
-export const register = async (req, res, next) => {
-  try {
+export const register = catchAsyncErrors(async (req, res, next) => {
+  
     // Check for profile image
     if (!req.files || Object.keys(req.files).length === 0) {
       return next(new ErrorHandler("Profile Image Required.", 400));
@@ -58,7 +60,7 @@ export const register = async (req, res, next) => {
     );
 
     if (!cloudinaryResponse || cloudinaryResponse.error) {
-      console.log("Cloudinary Error:", cloudinaryResponse.error || "Unknown error");
+      console.error("Cloudinary Error:", cloudinaryResponse.error || "Unknown error");
       return next(new ErrorHandler("Failed to upload profile image to Cloudinary.", 500));
     }
 
@@ -88,13 +90,8 @@ export const register = async (req, res, next) => {
 
       },
     });
+    generateToken(user, "User registered successfully.", 201, res);
 
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully.",
-    });
-  } catch (error) {
-    console.error("Registration Error:", error);
-    next(new ErrorHandler("Internal Server Error", 500));
-  }
-};
+   
+  });
+  
