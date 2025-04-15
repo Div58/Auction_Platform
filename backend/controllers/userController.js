@@ -94,4 +94,48 @@ export const register = catchAsyncErrors(async (req, res, next) => {
 
    
   });
-  
+  export const login = catchAsyncErrors(async (req, res, next) => { 
+    const { email, password } = req.body || {};
+
+    if (!email || !password) {
+      return next(new ErrorHandler("Please fill all fields.", 400));
+    }
+
+    // Check for existing user
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return next(new ErrorHandler("Invalid credentials.", 401));
+    }
+
+    // Check password
+    const isPasswordMatched = await user.comparePassword(password);
+    if (!isPasswordMatched) { 
+      return next(new ErrorHandler("Invalid credentials.", 401));
+    }
+
+    generateToken(user, "User logged in successfully.", 200, res);
+  });
+  export const getProfile = catchAsyncErrors(async (req, res, next) => {
+    const user = req.user;
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  });
+  export const logout = catchAsyncErrors(async (req, res, next) => {
+    res.status(200).cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    }).json({
+      success: true,
+      message: "Logged out successfully.",
+    });
+  });
+  export const fetchLeaderboard = catchAsyncErrors(async (req, res, next) => {
+    const users = await User.find({moneySpent: {$gt: 0}})
+    const leaderboard = users.sort((a, b) => b.moneySpent - a.moneySpent);
+    res.status(200).json({
+      success: true,
+      leaderboard,
+    });
+  });
