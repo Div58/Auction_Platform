@@ -1,7 +1,8 @@
 import ErrorHandler from "../middlewares/error.js";
 import User from "../models/userSchema.js";
 import { v2 as cloudinary } from "cloudinary";
-import  stripe  from "../utils/stripe.js";
+// import  stripe  from "../utils/stripe.js";
+
 //import { razorpay } from "../utils/razorpay.js";
 
 export const register = async (req, res, next) => {
@@ -17,6 +18,8 @@ export const register = async (req, res, next) => {
       return next(new ErrorHandler("File format not supported.", 400));
     }
 
+
+
     // Destructure form fields
     const {
       userName,
@@ -28,7 +31,7 @@ export const register = async (req, res, next) => {
       bankAccountNumber,
       bankAccountName,
       bankName,
-    } = req.body;
+    } = req.body ||{};
 
     if (!userName || !email || !phone || !password || !address || !role) {
       return next(new ErrorHandler("Please fill the full form.", 400));
@@ -48,31 +51,17 @@ export const register = async (req, res, next) => {
 
     // Upload image to Cloudinary
     const cloudinaryResponse = await cloudinary.uploader.upload(
-        profileImage.tempFilePath, 
-        {
-            folder: "MERN_AUCTION_PLATFORM_USERS",
-        }
+      profileImage.tempFilePath,
+      {
+        folder: "MERN_AUCTION_PLATFORM_USERS",
+      }
     );
 
     if (!cloudinaryResponse || cloudinaryResponse.error) {
+      console.log("Cloudinary Error:", cloudinaryResponse.error || "Unknown error");
       return next(new ErrorHandler("Failed to upload profile image to Cloudinary.", 500));
     }
 
-    // Create Stripe customer
-    let stripeCustomer;
-    try {
-      stripeCustomer = await stripe.customers.create({
-        email,
-        name: userName,
-        phone,
-      });
-    } catch (err) {
-      console.error("Stripe Error:", err);
-      return next(new ErrorHandler("Stripe customer creation failed.", 500));
-    }
-
-    // Create Razorpay customer
-    
 
     // Create user in DB
     const user = await User.create({
@@ -92,11 +81,11 @@ export const register = async (req, res, next) => {
           bankAccountName,
           bankName,
         },
-        stripe: {
-          customerId: stripeCustomer.id,
-          cardLast4: "", // Will be stored after first transaction
-        },
-        
+        // stripe: {
+        //   customerId: stripeCustomer.id,
+        //   cardLast4: "", // Will be stored after first transaction
+        // },
+
       },
     });
 
