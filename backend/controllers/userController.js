@@ -1,6 +1,6 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
-import User from "../models/userSchema.js";
+import {User} from "../models/userSchema.js";
 import { v2 as cloudinary } from "cloudinary";
 import { generateToken } from "../utils/jwtToken.js";
 // import  stripe  from "../utils/stripe.js";
