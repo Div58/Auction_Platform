@@ -10,9 +10,9 @@ const App = () => {
     <Router>
       <SideDrawer />
       <Routes>
-        <Route path="/"element={<Home/>} />
+        <Route path="/" element={<Home />} />
       </Routes>
-      <ToastContainer positions="top-right" />
+      <ToastContainer position="top-right" />
     </Router>
   );
 };
