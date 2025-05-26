@@ -1,10 +1,19 @@
-import React from 'react'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SideDrawer from './Layout/SideDrawer';
+import Home from './pages/Home';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
-    <>
-      <h1 className='text-red-600'>HELLO WORLD</h1>
-    </>
-  )
-}
-export default App
+    <Router>
+      <SideDrawer />
+      <Routes>
+        <Route path="/"element={<Home/>} />
+      </Routes>
+      <ToastContainer positions="top-right" />
+    </Router>
+  );
+};
+export default App;
