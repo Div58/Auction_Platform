@@ -62,9 +62,9 @@ const SideDrawer = () => {
                     {
                         isAuthenticated && user && user.role === "Super Admin" && (
                             <li>
-                                    <Link to={"/dashboard"} className="flex text-xl font-semibold gap-2 items-center hover:text-[#D6482b] hover:transition-all hover:duration-150"><MdDashboard /> Dashboard
-                                    </Link>
-                                </li>
+                                <Link to={"/dashboard"} className="flex text-xl font-semibold gap-2 items-center hover:text-[#D6482b] hover:transition-all hover:duration-150"><MdDashboard /> Dashboard
+                                </Link>
+                            </li>
                         )
                     }
 
@@ -72,22 +72,71 @@ const SideDrawer = () => {
                 {
                     !isAuthenticated ? (
                         <>
-                        <div className="my-4 flex gap-2">
-                            <Link to={"/sign-up"}>Sign Up</Link>
-                            <Link to={"/login"}>Login</Link>
-                        </div>
+                            <div className="my-4 flex gap-2">
+                                <Link to={"/sign-up"} className="bg-[#D6482B] font-semibold hover:bg-[#b8381e] text-xl py-1 px-4 rounded-md text-white">Sign Up</Link>
+                                <Link to={"/login"} className="text-[#DECCBE] bg-transparent border-[#DECCBE] border-2 hover:bg-[#fffefd] hover:text-[#fdba88] font-bold text-xl py-1 px-4 rounded-md">Login</Link>
+                            </div>
                         </>
                     ) : (
                         <>
-                        <div className="my-4 flex gap-4 w-fit" onClick={handleLogout}>
-                            <button>Logout</button>
-                        </div>
+                            <div className="my-4 flex gap-4 w-fit" onClick={handleLogout}>
+                                <button className="bg-[#D6482B] font-semibold hover:bg-[#b8381e] text-xl py-1 px-4 rounded-md text-white">Logout</button>
+                            </div>
                         </>
                     )
                 }
                 <hr className="mb-4 border-t-[#d6482b]" />
-                <ul></ul>
+                <ul className="flex flex-col gap-3">
+                    <li>
+                        <Link to={"/how-it-works-info"} className="flex text-xl font-semibold gap-2 items-center hover:text-[#D6482b] hover:transition-all hover:duration-150"><SiGooglesearchconsole /> How it works
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={"/about"} className="flex text-xl font-semibold gap-2 items-center hover:text-[#D6482b] hover:transition-all hover:duration-150"><BsFillInfoSquareFill /> About Us
+                        </Link>
+                    </li>
+                </ul>
+                <IoMdCloseCircleOutline onClick={() => setShow(!show)} className="absolute top-0 right-4 text-[28px] sm:hidden" />
             </div>
+
+
+            <div>
+                <div className="flex gap-2 items-center mb-2">
+                    <Link to="/" className="bg-white text-stone-500 p-2 text-xl rounded-sm hover:text-blue-700">
+                        <FaFacebook />
+                    </Link>
+                    <Link to="/" className="bg-white text-stone-500 p-2 text-xl rounded-sm hover:text-pink-500">
+                        <RiInstagramFill />
+                    </Link>
+
+                </div>
+                <Link to={"/contact"} className="text-stone-500 text-semoibold hover:text-[#d6482b] hover:transition-all hover:duration-150">
+                    Contact Us
+                </Link>
+                <p className="text-stone-500">&copy; PrimeBid, LLC.</p>
+                <p className="text-stone-500">
+                    Designed by{" "}
+                    <a
+                        href="https://www.linkedin.com/in/divyanshi12/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold hover:text-[#d6482b] transition-all duration-150"
+                    >
+                        Divyanshi
+                    </a>{" "}
+                    &{" "}
+                    <a
+                        href="https://www.linkedin.com/in/avinash-gupta-1b2b90257/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold hover:text-[#d6482b] transition-all duration-150"
+                    >
+                        Avinash Gupta
+                    </a>
+                </p>
+
+            </div>
+
         </div>
     </>
 };
